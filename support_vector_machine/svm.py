@@ -2,6 +2,7 @@
 from sklearn.svm import SVC
 from utils.data_generater import *
 
+
 class SVM(object):
     def __init__(self, max_iter=100, kernel='linear'):
         self.max_iter = max_iter
@@ -153,7 +154,7 @@ if __name__ == "__main__":
     X_train, X_test, y_train, y_test = create_svm_data()
 
     # 我们的svm
-    my_svm = svm = SVM(max_iter=200)
+    my_svm = svm = SVM(max_iter=200, kernel='linear')
     my_svm.fit(X_train, y_train)
     print("my svm score", my_svm.score(X_test, y_test))
 
