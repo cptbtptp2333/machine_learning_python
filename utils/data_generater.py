@@ -28,8 +28,8 @@ def create_logistic_data():
     df = pd.DataFrame(iris.data, columns=iris.feature_names)
     df['label'] = iris.target
     df.columns = ['sepal length', 'sepal width', 'petal length', 'petal width', 'label']
-    data = np.array(df.iloc[:100, [0,1,-1]])
-    X, y = data[:,:2], data[:,-1]
+    data = np.array(df.iloc[:100, [0, 1, -1]])
+    X, y = data[:,:2], data[:, -1]
     return train_test_split(X, y, test_size=0.3)
 
 
