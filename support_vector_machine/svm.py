@@ -1,6 +1,7 @@
 
 from sklearn.svm import SVC
 from utils.data_generater import *
+import math
 
 
 class SVM(object):
@@ -17,7 +18,7 @@ class SVM(object):
         # 将Ei保存在一个列表里
         self.alpha = np.ones(self.m)
         self.E = [self._E(i) for i in range(self.m)]
-        # E（x）为g(x)对输入x的预测值和y的差
+        # E(x)为g(x)对输入x的预测值和y的差
         # 松弛变量
         self.C = 1.0
 
@@ -42,7 +43,17 @@ class SVM(object):
         if self._kernel == 'linear':
             return sum([x1[k] * x2[k] for k in range(self.n)])
         elif self._kernel == 'poly':
-            return (sum([x1[k] * x2[k] for k in range(self.n)]) + 1) ** 2
+            poly_g = 0.5
+            poly_r = 0
+            poly_d = 3
+            return (poly_g * sum([x1[k] * x2[k] for k in range(self.n)]) + poly_r) ** poly_d
+        elif self._kernel == 'sigmoid':
+            sig_g = 0.5
+            sig_r = 1
+            return math.tanh(sig_g * sum([x1[k] * x2[k] for k in range(self.n)]) + sig_r)
+        elif self._kernel == 'gaussian':
+            gaussi_g = 0.5
+            return math.exp(-gaussi_g * sum((x1[k] - x2[k])**2 for k in range(self.n)))
 
         return 0
 
@@ -156,13 +167,12 @@ class SVM(object):
 
 if __name__ == "__main__":
     X_train, X_test, y_train, y_test = create_svm_data()
-
     # 我们的svm
     my_svm = svm = SVM(max_iter=200, kernel='linear')
     my_svm.fit(X_train, y_train)
-    print("my svm score", my_svm.score(X_test, y_test))
+    print("my svm score: %.3f%%" % (100 * my_svm.score(X_test, y_test)))
 
     # sklearn的svc
     sklearn_svc = SVC()
     sklearn_svc.fit(X_train, y_train)
-    print("sklearn svm score", sklearn_svc.score(X_test, y_test))
+    print("sklearn svm score: %.3f%%" % (100 * sklearn_svc.score(X_test, y_test)))
