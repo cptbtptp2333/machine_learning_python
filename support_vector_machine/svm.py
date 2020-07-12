@@ -17,6 +17,7 @@ class SVM(object):
         # 将Ei保存在一个列表里
         self.alpha = np.ones(self.m)
         self.E = [self._E(i) for i in range(self.m)]
+        # E（x）为g(x)对输入x的预测值和y的差
         # 松弛变量
         self.C = 1.0
 
@@ -59,15 +60,17 @@ class SVM(object):
         for i in index_list:
             if self._KKT(i):
                 continue
-
+            # KKT算法
             E1 = self.E[i]
             # 如果E2是+，选择最小的；如果E2是负的，选择最大的
             if E1 >= 0:
                 j = min(range(self.m), key=lambda x: self.E[x])
             else:
                 j = max(range(self.m), key=lambda x: self.E[x])
+            # 返回E1、E2对应的角标
             return i, j
 
+    # 边界限制函数
     def _compare(self, _alpha, L, H):
         if _alpha > H:
             return H
@@ -83,7 +86,7 @@ class SVM(object):
             # train
             i1, i2 = self._init_alpha()
 
-            # 边界
+            # 边界，self.c松弛变量
             if self.Y[i1] == self.Y[i2]:
                 L = max(0, self.alpha[i1] + self.alpha[i2] - self.C)
                 H = min(self.C, self.alpha[i1] + self.alpha[i2])
@@ -101,7 +104,8 @@ class SVM(object):
                 # print('eta <= 0')
                 continue
 
-            alpha2_new_unc = self.alpha[i2] + self.Y[i2] * (E1 - E2) / eta  # 此处有修改，根据书上应该是E1 - E2，书上130-131页
+            # alpha2_new_unc = self.alpha[i2] + self.Y[i2] * (E1 - E2) / eta  # 此处有修改，根据书上应该是E1 - E2，书上130-131页
+            alpha2_new_unc = E1 - E2
             alpha2_new = self._compare(alpha2_new_unc, L, H)
 
             alpha1_new = self.alpha[i1] + self.Y[i1] * self.Y[i2] * (self.alpha[i2] - alpha2_new)

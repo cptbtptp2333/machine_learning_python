@@ -4,7 +4,10 @@ from sklearn.datasets import load_iris
 from sklearn.model_selection import  train_test_split
 from random import random
 
+
 np.random.seed(10)
+
+
 def makeRandomPoint(num, dim, upper):
     return np.random.normal(loc=upper, size=[num, dim])
 
@@ -29,6 +32,7 @@ def create_logistic_data():
     X, y = data[:,:2], data[:,-1]
     return train_test_split(X, y, test_size=0.3)
 
+
 def create_svm_data():
     iris = load_iris()
     df = pd.DataFrame(iris.data, columns=iris.feature_names)
@@ -38,5 +42,5 @@ def create_svm_data():
     for i in range(len(data)):
         if data[i, -1] == 0:
             data[i, -1] = -1
-    X, y = data[:,:2], data[:,-1]
+    X, y = data[:, :2], data[:, -1]
     return train_test_split(X, y, test_size=0.3)
