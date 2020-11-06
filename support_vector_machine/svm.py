@@ -5,7 +5,7 @@ import math
 
 
 class SVM(object):
-    def __init__(self, max_iter=100, kernel='linear'):
+    def __init__(self, max_iter, kernel):
         self.max_iter = max_iter
         self._kernel = kernel
 
@@ -43,9 +43,9 @@ class SVM(object):
         if self._kernel == 'linear':
             return sum([x1[k] * x2[k] for k in range(self.n)])
         elif self._kernel == 'poly':
-            poly_g = 0.5
-            poly_r = 0
-            poly_d = 3
+            poly_g = 1
+            poly_r = 1
+            poly_d = 2
             return (poly_g * sum([x1[k] * x2[k] for k in range(self.n)]) + poly_r) ** poly_d
         elif self._kernel == 'sigmoid':
             sig_g = 0.5
@@ -166,9 +166,13 @@ class SVM(object):
 
 
 if __name__ == "__main__":
-    X_train, X_test, y_train, y_test = create_svm_data()
+    X, y = create_svm_data()
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
     # 我们的svm
-    my_svm = svm = SVM(max_iter=200, kernel='linear')
+    max_iter = 200
+    kernel = 'poly'
+    print('The kernel is %s.' % kernel)
+    my_svm = svm = SVM(max_iter, kernel)
     my_svm.fit(X_train, y_train)
     print("my svm score: %.3f%%" % (100 * my_svm.score(X_test, y_test)))
 

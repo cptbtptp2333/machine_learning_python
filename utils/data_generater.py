@@ -43,4 +43,4 @@ def create_svm_data():
         if data[i, -1] == 0:
             data[i, -1] = -1
     X, y = data[:, :2], data[:, -1]
-    return train_test_split(X, y, test_size=0.3)
+    return X, y

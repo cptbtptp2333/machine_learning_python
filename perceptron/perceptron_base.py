@@ -45,8 +45,7 @@ def main():
     X = iris.data[:100, [0, 2]]
     y = iris.target[:100]
     y = np.where(y == 1, 1, -1)
-    X_train, X_test, y_train, y_test = \
-        train_test_split(X, y, test_size=0.3)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
     ppn = PerceptronBase(eta=0.1, n_iter=10)
     ppn.fit(X_train, y_train)
     plot_decision_regions(ppn, X, y)
